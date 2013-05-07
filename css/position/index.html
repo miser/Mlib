@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>position</title>
+<style type="text/css">
+	.outer {
+		width:100px;height:100px;background-color:#ccc;border:1px solid green;
+	}
+	.middle {
+		width:60px;height:60px;background-color:#888;border:2px solid blue;
+	}
+	.inner {
+		width:30px;height:30px;background-color:#999;border:3px solid red;
+	}
+</style>
+</head>
+<body style="min-height:3000px">
+	<h1>position 理解练习</h1>
+	<h4>目标：理解position中 static、absolute、relative、fixed</h4>
+	<br/>
+	<h5>1.默认情况下position为static</h5>
+	<div id="outer-1" class="outer">
+ 		<div id="middle-1" class="middle">
+   			<div id="inner-1" class="inner"></div>
+ 		</div>
+	</div>
+	<ul id="result-1">
+		<li>结果：</li>
+	</ul>
+	<br/>
+	<h5>2.最外层position分别为relative，absolute,fixed</h5>
+	<div id="outer-2-1" class="outer" style="position:relative">
+ 		<div id="middle-2-1" class="middle">
+   			<div id="inner-2-1" class="inner"></div>
+ 		</div>
+	</div>
+	<ul id="result-2-1">
+		<li>结果：</li>
+	</ul>
+	<div style="height:150px">
+		<div id="outer-2-2" class="outer" style="position:absolute">
+	 		<div id="middle-2-2" class="middle">
+	   			<div id="inner-2-2" class="inner"></div>
+	 		</div>
+		</div>
+	</div>
+	<ul id="result-2-2">
+		<li>结果：</li>
+	</ul>
+	<div style="position:relative">
+		<div id="outer-2-3" class="outer" style="position:fixed;">
+	 		<div id="middle-2-3" class="middle" >
+	   			<div id="inner-2-3" class="inner"></div>
+	 		</div>
+		</div>
+	</div>
+	<ul id="result-2-3">
+		<li style="color:#666"><em>(由于是fixed所以3个框“无法”在上面显示（它们随页面滚动），可以看源码)</em></li>
+		<li>结果：</li>
+	</ul>
+	<ul id="result-2">
+		<li>结果：</li>
+	</ul>
+</body>
+</html>
+<script type="text/javascript">
+(function() {
+	printResut(1, '如果所有父节点的position为static,那么该节点的offsetParent为body');
+	printResut('2-1')
+	printResut('2-2')
+	printResut('2-3')
+	var result2 = '';
+	result2 += 'IE6不支持CSS中的position:fixed属性<br/>';
+	result2 += '元素找到离自己最近的position非static的父节点，这个父节点即是自己的offsetParent,offsetTop即自己的上边外到offsetParent上边内的距离<br/>';
+	result2 += '被设为fixed的元素，它的offsetParent 为null，符合“相对于浏览器窗口进行定位”的定义';
+	printResut('2', result2)
+})();
+
+function printResut(resultNumber, resultDescript) {
+	var outerEl = document.getElementById('outer-' + resultNumber),
+		middleEl = document.getElementById('middle-' + resultNumber),
+		innerEl = document.getElementById('inner-' + resultNumber),
+		resultEl = document.getElementById('result-' + resultNumber);
+	if (outerEl) resultEl.appendChild(getElInfo(outerEl));
+	if (middleEl) resultEl.appendChild(getElInfo(middleEl));
+	if (innerEl) resultEl.appendChild(getElInfo(innerEl));
+
+	if (resultDescript) {
+		var descriptResultEl = document.createElement('li');
+		descriptResultEl.innerHTML = resultDescript;
+		resultEl.appendChild(descriptResultEl)
+	}
+}
+
+function getElInfo(el) {
+	var infoEl = document.createElement('li');
+	var info = '';
+	info += 'offsetParent:' + (el.offsetParent ? el.offsetParent.nodeName : null);
+	info += '|offsetParentClass:' + (el.offsetParent ? el.offsetParent.className ? el.offsetParent.className : null : null);
+	info += '|offsetTop:' + el.offsetTop;
+	infoEl.innerHTML = info;
+	return infoEl;
+}
+</script>
