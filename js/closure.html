@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>闭包(closure)</title>
+<script type="text/javascript" src="../lib/syntaxhighlighter/src/shCore.js"></script>
+ 
+<!--
+    At least one brush, here we choose JS. You need to include a brush for every 
+    language you want to highlight
+-->
+<script type="text/javascript" src="../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+ 
+<!-- Include *at least* the core style and default theme -->
+<link href="../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+	
+</style>
+</head>
+<body>
+	<h1>闭包(closure)</h1>
+	<h4>目标：理解 javascript中的闭包(closure)</h4>
+	<br/>
+
+	<q>
+		在函数内保持数据的特性被称为闭包 —— 《javascript语言精粹和编程实战 第二版》
+	</q>
+
+	<h5>《javascript语言精粹和编程实战 第二版》 P209 </h5>
+	<pre class="brush: js">
+		var set , get;
+		function MyFunc(){
+			//初值
+			var value = 100;
+			//内部函数
+			function set_value(v){
+				value = v;
+			}
+			function get_value(){
+				return value;
+			}
+			//将内部函数公布到全局
+			set = set_value;
+			get = get_value;
+		}
+		//测试一
+		//输出100
+		MyFunc();
+		alert(get());
+
+		//测试二
+		//输出300
+		set(300);
+		alert(get());
+	</pre>
+</body>
+</html>
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
