@@ -19,24 +19,84 @@
 
 		(function drag() {
 			for (var i = 0; i < rowsEl.length; i++) {
-				rowsEl[i].addEvent('mousedown', function(ev) {
-					self.drapObj = this;
-					self.currentTable = table;
-					self.mouseOffset = getMouseOffset(this, ev);
+				addEvent(rowsEl[i], 'mousedown', function(ev) {
+					self.dragObj = this;
+					self.currentTable = containEl;
+					self.mouseOffset = getMouseOffset(this, ev); //鼠标在td里面的偏移坐标
 				})
 			}
 		})();
 
-		document.addEvent('mousemove',function(){
+		function mousemove(ev) {
+			if (self.dragObj == null) return;
 
-		})
-		document.addEvent('mouseup',function(){
-			
-		})
+			var dragObj = self.dragObj,
+				mousePosition = mouseCoords(ev),
+				y = mousePosition.y - self.mouseOffset.y,
+				yOffset = window.pageYOffset;
+			// if (document.all) {
+			// 	// Windows version
+			// 	//yOffset=document.body.scrollTop;
+			// 	if (typeof document.compatMode != 'undefined' && document.compatMode != 'BackCompat') {
+			// 		yOffset = document.documentElement.scrollTop;
+			// 	} else if (typeof document.body != 'undefined') {
+			// 		yOffset = document.body.scrollTop;
+			// 	}
+
+			// }
+			// if (mousePos.y - yOffset < config.scrollAmount) {
+			// 	window.scrollBy(0, -config.scrollAmount);
+			// } else {
+			// 	var windowHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
+			// 	if (windowHeight - (mousePos.y - yOffset) < config.scrollAmount) {
+			// 		window.scrollBy(0, config.scrollAmount);
+			// 	}
+			// }
+			if (y != MTable.oldY) {
+				var movingDown = y > MTable.oldY;
+				MTable.oldY = y;
+
+				dragObj.style.backgroundColor = 'red';
+
+				var currentRow = findDropTargetRow(dragObj, y);
+				if (currentRow) {
+					if (movingDown && self.dragObject != currentRow) {
+						self.dragObj.parentNode.insertBefore(self.dragObj, currentRow.nextSibling);
+					} else if (!movingDown && self.dragObj != currentRow) {
+						self.dragObj.parentNode.insertBefore(self.dragObj, currentRow);
+					}
+				}
+			}
+			return false;
+		}
+
+		function mouseup(ev) {
+			if (self.currentTable && self.dragObj) {
+				var droppedRow = self.dragObj;
+				// var config = jQuery.tableDnD.currentTable.tableDnDConfig;
+				// If we have a dragObject, then we need to release it,
+				// The row will already have been moved to the right place so we just reset stuff
+				// if (config.onDragClass) {
+				// 	jQuery(droppedRow).removeClass(config.onDragClass);
+				// } else {
+				// 	jQuery(droppedRow).css(config.onDropStyle);
+				// }
+				self.dragObj = null;
+				// if (config.onDrop) {
+				// 	// Call the onDrop method if there is one
+				// 	config.onDrop(jQuery.tableDnD.currentTable, droppedRow);
+				// }
+				self.currentTable = null; // let go of the table too
+			}
+		}
+
+		addEvent(document, 'mousemove', mousemove);
+		addEvent(document, 'mouseup', mouseup)
 
 		/**
 		 * 鼠标在一个元素里的相对位置
 		 */
+
 		function getMouseOffset(target, ev) {
 			ev = ev || window.event;
 
@@ -89,8 +149,46 @@
 				y: top
 			};
 		}
+
+		function findDropTargetRow(draggedRow, y) {
+			var rows = self.currentTable.rows;
+			for (var i = 0; i < rows.length; i++) {
+				var row = rows[i];
+				var rowY = getPosition(row).y;
+				var rowHeight = parseInt(row.offsetHeight) / 2;
+				// if (row.offsetHeight == 0) {
+				// 	rowY = this.getPosition(row.firstChild).y;
+				// 	rowHeight = parseInt(row.firstChild.offsetHeight) / 2;
+				// }
+				// Because we always have to insert before, we need to offset the height a bit
+				if ((y > rowY - rowHeight) && (y < (rowY + rowHeight))) {
+					// that's the row we're over
+					// If it's the same as the current row, ignore it
+					if (row == draggedRow) {
+						return null;
+					}
+					// var config = jQuery.tableDnD.currentTable.tableDnDConfig;
+					// if (config.onAllowDrop) {
+					// 	if (config.onAllowDrop(draggedRow, row)) {
+					// 		return row;
+					// 	} else {
+					// 		return null;
+					// 	}
+					// } else {
+					// 	// If a row has nodrop class, then don't allow dropping (inspired by John Tarr and Famic)
+					// 	var nodrop = $(row).hasClass("nodrop");
+					// 	if (!nodrop) {
+					// 		return row;
+					// 	} else {
+					// 		return null;
+					// 	}
+					// }
+					return row;
+				}
+			}
+			return null;
+		}
 	}
-}
-MTable('table');
+	MTable('table');
 
 })();
