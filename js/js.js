@@ -16,13 +16,34 @@
 		var self = this,
 			containEl = document.getElementById(elId),
 			rowsEl = containEl.getElementsByTagName('tr');
+		columnsEl = containEl.getElementsByTagName('th');
+		console.log(columnsEl);
 
 		(function drag() {
 			for (var i = 0; i < rowsEl.length; i++) {
 				addEvent(rowsEl[i], 'mousedown', function(ev) {
-					self.dragObj = this;
-					self.currentTable = containEl;
-					self.mouseOffset = getMouseOffset(this, ev); //鼠标在td里面的偏移坐标
+					if (ev.target.tagName == "TD") {
+						self.dragRow = true;
+						self.dragObj = this;
+						self.currentTable = containEl;
+						self.mouseOffset = getMouseOffset(this, ev); //鼠标在td里面的偏移坐标
+						ev.preventDefault();
+						ev.stopPropagation();
+					}
+				})
+			}
+		})();
+		(function dragTD() {
+			for (var i = 0; i < columnsEl.length; i++) {
+				addEvent(columnsEl[i], 'mousedown', function(ev) {
+					if (ev.target.tagName == "TH") {
+						self.dragColumn = true;
+						self.dragObj = this;
+						self.currentTable = containEl;
+						self.mouseOffset = getMouseOffset(this, ev); //鼠标在td里面的偏移坐标
+						ev.preventDefault();
+						ev.stopPropagation();
+					}
 				})
 			}
 		})();
@@ -30,44 +51,84 @@
 		function mousemove(ev) {
 			if (self.dragObj == null) return;
 
-			var dragObj = self.dragObj,
-				mousePosition = mouseCoords(ev),
-				y = mousePosition.y - self.mouseOffset.y,
-				yOffset = window.pageYOffset;
-			// if (document.all) {
-			// 	// Windows version
-			// 	//yOffset=document.body.scrollTop;
-			// 	if (typeof document.compatMode != 'undefined' && document.compatMode != 'BackCompat') {
-			// 		yOffset = document.documentElement.scrollTop;
-			// 	} else if (typeof document.body != 'undefined') {
-			// 		yOffset = document.body.scrollTop;
-			// 	}
+			if (self.dragRow) {
+				var dragObj = self.dragObj,
+					mousePosition = mouseCoords(ev),
+					y = mousePosition.y - self.mouseOffset.y,
+					yOffset = window.pageYOffset;
+				// if (document.all) {
+				// 	// Windows version
+				// 	//yOffset=document.body.scrollTop;
+				// 	if (typeof document.compatMode != 'undefined' && document.compatMode != 'BackCompat') {
+				// 		yOffset = document.documentElement.scrollTop;
+				// 	} else if (typeof document.body != 'undefined') {
+				// 		yOffset = document.body.scrollTop;
+				// 	}
 
-			// }
-			// if (mousePos.y - yOffset < config.scrollAmount) {
-			// 	window.scrollBy(0, -config.scrollAmount);
-			// } else {
-			// 	var windowHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
-			// 	if (windowHeight - (mousePos.y - yOffset) < config.scrollAmount) {
-			// 		window.scrollBy(0, config.scrollAmount);
-			// 	}
-			// }
-			if (y != MTable.oldY) {
-				var movingDown = y > MTable.oldY;
-				MTable.oldY = y;
+				// }
+				// if (mousePos.y - yOffset < config.scrollAmount) {
+				// 	window.scrollBy(0, -config.scrollAmount);
+				// } else {
+				// 	var windowHeight = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : document.body.clientHeight;
+				// 	if (windowHeight - (mousePos.y - yOffset) < config.scrollAmount) {
+				// 		window.scrollBy(0, config.scrollAmount);
+				// 	}
+				// }
+				if (y != MTable.oldY) {
+					var movingDown = y > MTable.oldY;
+					MTable.oldY = y;
 
-				dragObj.style.backgroundColor = 'red';
+					dragObj.style.cursor = 'move';
 
-				var currentRow = findDropTargetRow(dragObj, y);
-				if (currentRow) {
-					if (movingDown && self.dragObject != currentRow) {
-						self.dragObj.parentNode.insertBefore(self.dragObj, currentRow.nextSibling);
-					} else if (!movingDown && self.dragObj != currentRow) {
-						self.dragObj.parentNode.insertBefore(self.dragObj, currentRow);
+					var currentRow = findDropTargetRow(dragObj, y);
+					if (currentRow) {
+						if (movingDown && self.dragObject != currentRow) {
+							self.dragObj.parentNode.insertBefore(self.dragObj, currentRow.nextSibling);
+						} else if (!movingDown && self.dragObj != currentRow) {
+							self.dragObj.parentNode.insertBefore(self.dragObj, currentRow);
+						}
 					}
 				}
+				ev.preventDefault();
+				ev.stopPropagation();
+			} else if (self.dragColumn) {
+
+				var dragObj = self.dragObj,
+					mousePosition = mouseCoords(ev),
+					x = mousePosition.x - self.mouseOffset.x,
+					xOffset = window.pageXOffset;
+				if (x != MTable.oldX) {
+					var movingDown = x > MTable.oldX;
+					MTable.oldX = x;
+
+					dragObj.style.cursor = 'move';
+
+					var currentColumn = findDropTargetColumn(dragObj, x);
+					if (currentColumn) {
+						// var tempInnerHTML = currentColumn.innerHTML;
+						// currentColumn.innerHTML = dragObj.innerHTML;
+						// dragObj.innerHTML = tempInnerHTML;
+						// self.dragObj = dragObj = currentColumn;
+
+						var needReplacedTDs = document.getElementsByClassName(currentColumn.className),
+							replaceTDs = document.getElementsByClassName(dragObj.className);
+							console.log(needReplacedTDs);
+							console.log(replaceTDs);
+						for (var i = 0; i < needReplacedTDs.length && i < replaceTDs.length; i++) {
+							var replacedTD = needReplacedTDs[i],
+								replaceTD = replaceTDs[i],
+								tempTD = replacedTD.innerHTML;
+								replacedTD.innerHTML = replaceTD.innerHTML;
+								replaceTD.innerHTML = tempTD;
+						}
+						self.dragObj = dragObj = currentColumn;
+						// console.log(currentColumn.innerHTML)
+						// console.log(currentColumn.getAttribute('data-column-num'))
+					}
+				}
+				ev.preventDefault();
+				ev.stopPropagation();
 			}
-			return false;
 		}
 
 		function mouseup(ev) {
@@ -87,6 +148,9 @@
 				// 	config.onDrop(jQuery.tableDnD.currentTable, droppedRow);
 				// }
 				self.currentTable = null; // let go of the table too
+
+				self.dragRow = false;
+				self.dragColumn = false;
 			}
 		}
 
@@ -184,6 +248,22 @@
 					// 	}
 					// }
 					return row;
+				}
+			}
+			return null;
+		}
+
+		function findDropTargetColumn(draggedColumn, x) {
+			// var rows = columnsEl;
+			for (var i = 0; i < columnsEl.length; i++) {
+				var column = columnsEl[i];
+				var columnX = getPosition(column).x;
+				var columnHeight = parseInt(column.offsetWidth) / 2;
+				if ((x > columnX - columnHeight) && (x < (columnX + columnHeight))) {
+					if (column == draggedColumn) {
+						return null;
+					}
+					return column;
 				}
 			}
 			return null;

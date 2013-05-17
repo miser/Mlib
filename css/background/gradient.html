@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>position</title>
+<style type="text/css">
+	body{
+		font-size:12px;
+	}
+	.current-tag , .history-tag{
+		display: inline-block;
+		border-radius: 10px;
+		padding: 2px 8px 2px 8px;
+		border:1px solid transparent ;
+	}
+	.current-tag:hover, .history-tag:hover{
+		background: #b8812a;
+		color:#fff;
+		border-color:#b8812a;
+	}
+	.current-tag{
+		background-image:-webkit-gradient(linear, 0 0,0  100%, color-stop(0,rgb(153,197,26)),color-stop(0.5,rgb(140,181,21)),color-stop(1,rgb(129,167,17)));
+		color:#fff;
+		border-color:#fff;
+	}
+	.history-tag{
+		color:#666666;
+		border-color:#cbcbcb;
+		background-image:-webkit-gradient(linear, 0 0,0  100%, color-stop(0,#fefefe),color-stop(0.5,#f8f8f8),color-stop(1,#f3f3f3));
+	}
+	.history-tag.selected{
+		color:#cecece;
+		background:;
+	}
+	.history-tag.selected:hover{
+		color:#cecece;
+		border-color:#cbcbcb;
+		background:-webkit-gradient(linear, 0 0,0  100%, color-stop(0,#fefefe),color-stop(0.5,#f8f8f8),color-stop(1,#f3f3f3));
+	}
+</style>
+</head>
+<body>
+	<span class="current-tag">游戏</span>
+	<span class="current-tag">Game</span>
+	<span class="history-tag">历史</span>
+	<span class="history-tag">History</span>
+	<span class="history-tag selected">选择</span>
+	<span class="history-tag selected">selected</span>
+</body>
+</html>
