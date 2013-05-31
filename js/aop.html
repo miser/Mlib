@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Aop</title>
+<script type="text/javascript" src="../lib/syntaxhighlighter/src/shCore.js"></script>
+<script type="text/javascript" src="../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+<link href="../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+	<h1>Aop又叫面向切面编程</h1>
+	<h4><a href="http://www.alloyteam.com/2013/05/javascript-code-with-aop-improvement/#prettyPhoto">用AOP改善javascript代码.</a></h4>
+
+	<pre class="brush: js">
+		Function.prototype.before = function(func){
+			//__self 指的是具体的调用方法
+			var __self = this;
+			return function(){
+				if(func.apply(this,arguments) === false){
+					return false;
+				}
+				return __self.apply(this,arguments);
+			}
+		}
+		Function.prototype.after = function(func){
+			/**
+			 * 这里的__self 其实是从before那边“传过”来的
+			 *  before 返回的是一个方法 
+			 *	return function() {
+			 *		if (func.apply(this, arguments) === false) {
+			 *			return false;
+			 *		}
+			 *		return __self.apply(this, arguments);
+			 *  }
+			 */			
+			var __self = this;
+			return function(){
+				//此时的this为什么是调用对象呢？
+				var ret =  __self.apply(this,arguments);
+				if(ret === false){
+					return false;
+				}
+				func.apply(this, arguments);
+				return ret;
+			}
+		}
+	</pre>	
+</body>
+</html>
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>
+<script type="text/javascript">
+Function.prototype.before = function(func) {
+	//__self 指的是具体的调用方法
+	var __self = this;
+	return function() {
+		console.log(this)
+		if (func.apply(this, arguments) === false) {
+			return false;
+		}
+		return __self.apply(this, arguments);
+	}
+}
+Function.prototype.after = function(func) {
+	/**
+	 * 这里的__self 其实是从before那边“传过”来的
+	 *  before 返回的是一个方法 
+	 *	return function() {
+	 *		if (func.apply(this, arguments) === false) {
+	 *			return false;
+	 *		}
+	 *		return __self.apply(this, arguments);
+	 *  }
+	 */
+	var __self = this;
+	return function() {
+		var ret = __self.apply(this, arguments);
+		if (ret === false) {
+			return false;
+		}
+		func.apply(this, arguments);
+		return ret;
+	}
+}
+
+function User(){
+
+}
+User.prototype.say = function(){
+	console.log('say')
+}
+var user = new User;
+user.name = 'miser'
+user.say = user.say.before(function(){
+	console.log('before')
+}).after(function(){
+	console.log('after')
+})
+user.say();
+
+
+user.cry = function () {
+	console.log(this)
+	return function(){
+		console.log(this)
+	}
+}
+user.cry = user.cry();
+// user.cry()
+var c = user.cry;
+c();
+
+</script>
