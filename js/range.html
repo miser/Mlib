@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Range</title>
+	<style type="text/css">
+		li{display: inline;}
+	</style>
+</head>
+<body contenteditable="true">
+	<div id="t-div-1">test div 1</div>
+	<ul id="t-ul-1">
+		<li id="t-li-1">t-li-1</li>
+		<li id="t-li-2">t-li-2</li>
+		<li id="t-li-3">t-li-3</li>
+		<li id="t-li-4">t-li-4</li>
+		<li id="t-li-5">t-li-5</li>
+	</ul>
+	<input type="button" onclick="exec1()" />
+	<input type="button" onclick="exec2()" />
+	<input type="button" onclick="exec3()" />
+</body>
+</html>
+<script type="text/javascript">
+function getRange() {
+	var userSelection, rangeObject;
+	if (window.getSelection) { //现代浏览器
+		userSelection = window.getSelection();
+	} else if (document.selection) { //IE浏览器 考虑到Opera，应该放在后面
+		userSelection = document.selection.createRange();
+	}
+	//Range对象
+	rangeObject = userSelection;
+	if (userSelection.getRangeAt) {
+		//现代浏览器
+		rangeObject = userSelection.getRangeAt(0);
+	}
+	return {
+		selection: userSelection,
+		range: rangeObject
+	};
+}
+
+
+var divEl = document.getElementById('t-div-1'),
+	li1El = document.getElementById('t-li-1'),
+	li2El = document.getElementById('t-li-2'),
+	ulEl =  document.getElementById('t-ul-1');
+function exec1() {
+	var r = getRange(),
+		range = r.range,
+		selection = r.selection;
+	if (!(text = selection.text)) {
+		text = selection;
+	}
+	range.startOffset = 3;
+	console.log(range.toString())
+}
+
+function exec2() {
+	var r = getRange(),
+		range = r.range,
+		selection = r.selection;
+	if (!(text = selection.text)) {
+		text = selection;
+	}
+	console.log(range.toString())
+}
+
+function exec3() {
+	var range = document.createRange(),
+	rangeLi1 = document.createRange(),
+	rangeLi2 = document.createRange();
+	//li1El
+	range.selectNode(ulEl);
+	rangeLi1.selectNode(li1El);
+	rangeLi2.selectNode(li2El);
+
+	var r = getRange().range;
+	// range.setStart(li1El)
+	// range.setEnd(li2El);
+	// range.startOffset = r.endOffset;
+	// r.setEnd(li2El);
+	console.log(r.toString())
+	// range.setEnd(li2El,rangeLi2.endOffset - rangeLi1.endOffset - 1);
+	// range.endOffset = 3;
+	// console.log(rangeLi1.startOffset)
+	// console.log(rangeLi2.startOffset)
+	// console.log(range.toString())
+}
+</script>
