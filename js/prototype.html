@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title>Range</title>
+	<style type="text/css">
+		li{display: inline;}
+	</style>
+</head>
+<body contenteditable="true">
+	
+</body>
+</html>
+<script type="text/javascript">
+
+//会被for-in 出来
+Object.prototype.init = function(){}
+console.log('******* base ********')
+var Base = function(){
+	this.name = 'miser';
+	this.colors = ['red','blue']
+}
+Base.prototype = new Object;
+Base.prototype.gender = 'man';
+Base.prototype.school = ['school1']
+var base = new Base;
+for(var i in base){
+	console.log(i + ':' + base[i])
+}
+
+console.log('******* child ********')
+var Child = function(){
+
+}
+console.log('* child1 *')
+Child.prototype = new Base;
+Child.prototype.level = 0;
+Child.prototype.borther = ['borther1'];
+var child1 = new Child;
+child1.gender = 'woman';
+child1.level = 1;
+child1.name = 'nana';
+delete child1.name;//删除后回去找Base.prototype.name
+delete child1.name;//无法在删除了因为 此时的name是 Base.prototype.name
+//child1.colors = ['red']; 和 child1.colors.push('green') 完全不同，前者是覆盖，不会影响其他子对象后者是对原来的对象进行添加，会影响其他子对象和父对象(仅对prototype不会上的属性会)
+// child1.colors = ['red'];
+child1.colors.push('green')
+// child1.school = ['school1','school2'];
+child1.school.push('school2');
+console.log('base.school:' + Base.prototype.school)
+child1.borther = ['borther2'];
+console.log(child1)
+for(var i in child1){
+	console.log(i + ':' + child1[i])
+}
+console.log('* child2 *')
+var child2 = new Child;
+for(var i in child2){
+	console.log(i + ':' + child2[i])
+}
+
+
+console.log('******* delete ********')
+//delete只能删除属于自己的 hasOwnProperty('ooxx') == true 的
+console.log(base.hasOwnProperty('name')) // true
+console.log(delete base.name) //true
+Base.prototype.cry = function(){console.log('cry')}
+console.log(base.hasOwnProperty('cry')) //false
+base.cry()// print cry
+console.log(delete base.cry)//true 但是不能被删除
+console.log(base.name) //undefined
+base.cry()// print cry
+</script>

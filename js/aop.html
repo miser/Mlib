@@ -57,7 +57,6 @@ Function.prototype.before = function(func) {
 	//__self 指的是具体的调用方法
 	var __self = this;
 	return function() {
-		console.log(this)
 		if (func.apply(this, arguments) === false) {
 			return false;
 		}
@@ -95,22 +94,10 @@ User.prototype.say = function(){
 var user = new User;
 user.name = 'miser'
 user.say = user.say.before(function(){
-	console.log('before')
+	console.log(this)
 }).after(function(){
 	console.log('after')
 })
 user.say();
-
-
-user.cry = function () {
-	console.log(this)
-	return function(){
-		console.log(this)
-	}
-}
-user.cry = user.cry();
-// user.cry()
-var c = user.cry;
-c();
 
 </script>
