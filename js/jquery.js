@@ -497,6 +497,7 @@ jQuery.extend({
 		}
 
 		parsed = jQuery.buildFragment( [ data ], context, scripts ? null : [] );
+		console.log(jQuery.clone)
 		return jQuery.merge( [],
 			(parsed.cacheable ? jQuery.clone( parsed.fragment ) : parsed.fragment).childNodes );
 	},
@@ -838,7 +839,7 @@ jQuery.extend({
 		return ( new Date() ).getTime();
 	}
 });
-
+//#mark 
 jQuery.ready.promise = function( obj ) {
 	if ( !readyList ) {
 
