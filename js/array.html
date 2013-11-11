@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>数组</title>
+<script type="text/javascript" src="../lib/syntaxhighlighter/src/shCore.js"></script>
+<script type="text/javascript" src="../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+<link href="../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+	<h1>Array</h1>
+	<h5>操控数组length属性对数组的影响</h5>
+	<pre class="brush: js">
+		//减少
+		var ary1 = new Array(5); //初始化一个新的数组，其长度为5
+		console.log(ary1.length); // 5
+		ary1[4] = 'four';
+		console.log(ary1[4]); // four
+		ary1.length = 4;
+		console.log(ary1[4]); // undefined
+		//扩大
+		var ary2 = new Array(5); 
+		ary2.length = 6;
+		console.log(ary2.length); // 6
+		console.log(ary2[5]); // undefined
+	</pre>
+	<h5>直接操作数据的索引位置</h5>
+	<pre class="brush: js">
+		var ary1 = [1,2,3,4];
+		console.log(ary1.length); // 4
+		ary1[50] = 51;
+		console.log(ary1.length); // 51
+	</pre>
+	<h5>栈</h5>
+	<pre class="brush: js">
+		var colors = new Array();
+		var count = colors.push('red','green');
+		console.log(count);//2
+		count = colors.push('black');
+		console.log(count);//3
+		var item = colors.pop();
+		console.log(item);//black
+		console.log(colors.length);//2
+	</pre>
+	<h5>列队</h5>
+	<pre class="brush:js">
+		//方法1
+		var colors = new Array('red', 'green');
+		colors.push('black');
+		console.log(colors.length); //3
+		var item = colors.shift();
+		console.log(colors.length); //2
+		console.log(item); //red
+
+		//方法2
+		var colors = new Array();
+		colors.unshift('green', 'red');
+		console.log(colors.length); //2
+		colors.unshift('black');
+		console.log(colors.length); //3
+		var item = colors.pop();
+		console.log(colors.length); //2
+		console.log(item); //red	
+	</pre>
+	<h5>排序</h5>
+	<pre class="brush:js">
+
+	</pre>
+</body>
+<script type="text/javascript">
+SyntaxHighlighter.all();
+(function() {
+	console.log('操控数组length属性对数组的影响');
+	//减少
+	var ary1 = new Array(5); //初始化一个新的数组，其长度为5
+	console.log(ary1.length); // 5
+	ary1[4] = 'four';
+	console.log(ary1[4]); // four
+	ary1.length = 4;
+	console.log(ary1[4]); // undefined
+	//扩大
+	var ary2 = new Array(5);
+	ary2.length = 6;
+	console.log(ary2.length); // 6
+	console.log(ary2[5]); // undefined
+})();
+(function() {
+	console.log('直接操作数据的索引位置');
+	var ary1 = [1, 2, 3, 4];
+	console.log(ary1.length); // 4
+	ary1[50] = 51;
+	console.log(ary1.length); // 51
+})();
+(function() {
+	console.log('栈');
+	var colors = new Array();
+	var count = colors.push('red', 'green');
+	console.log(count); //2
+	count = colors.push('black');
+	console.log(count); //3
+	var item = colors.pop();
+	console.log(item); //black
+	console.log(colors.length); //2
+})();
+(function() {
+	console.log('列队');
+	console.log('方法1');
+	var colors = new Array('red', 'green');
+	colors.push('black');
+	console.log(colors.length); //3
+	var item = colors.shift();
+	console.log(colors.length); //2
+	console.log(item); //red
+
+	console.log('方法2');
+	var colors = new Array();
+	colors.unshift('green', 'red');
+	console.log(colors.length); //2
+	colors.unshift('black');
+	console.log(colors.length); //3
+	var item = colors.pop();
+	console.log(colors.length); //2
+	console.log(item); //red	
+})();
+(function() {
+	console.log('排序');
+	console.log('reverse');
+	var values1 = [1, 2, 3, 4, 5];
+	var values2 = [4, 3, 5, 1, 2];
+	values1.reverse();
+	values2.reverse();
+	console.log(values1); //5,4,3,2,1
+	console.log(values2); //2,1,5,3,4 
+
+	console.log('sort')
+	var values = [0, 1, 5, 10, 15];
+	values.sort();
+	console.log(values); //0,1,10,15,5 //sort默认是升序，调用对象的toString方法做比较
+
+	function compare(v1, v2) {
+		if (v1 < v2) {
+			return 1;
+		} else if (v1 > v2) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+	var values = [0, 1, 5, 10, 15];
+	values.sort(compare);
+	console.log(values); //15,10,5,1,0
+
+	//如果仅仅反转数据，reverse更快
+})();
+</script>
