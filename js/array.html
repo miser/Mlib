@@ -14,6 +14,15 @@
 </head>
 <body>
 	<h1>Array</h1>
+	<h5>判断是否是Array对象</h5>
+	<pre class="brush:js">
+		console.log('判断是否是Array对象');
+		console.log([] instanceof Array);//true
+		console.log(1 instanceof Array);//false
+		//ES5
+		console.log(Array.isArray([]));//true
+		console.log(Array.isArray(1));//false
+	</pre>
 	<h5>操控数组length属性对数组的影响</h5>
 	<pre class="brush: js">
 		//减少
@@ -104,9 +113,177 @@
 
 		//如果仅仅反转数据，reverse更快
 	</pre>
+	<h5>合并</h5>
+	<pre class="brush:js">
+		console.log('合并');
+		var array = [1, 2, 3, 4];
+		var newArray = array.concat(5, 6, [7, 8, 9, [10, 11, [12]]],13,[14]);
+		console.log(array);//[1,2,3,4]
+		console.log(newArray);//[1, 2, 3, 4, 5, 6, 7, 8, 9, Array[3],13,14]
+		//concat
+		//不会修改原来数组
+		//新追加的数据仅会把单一的元素或一维数据里的内容合并，元素里的子数组还是子数组
+	</pre>
+	<h5>slice 和 splice</h5>
+	<pre class="brush:js">
+		console.log('slice 和 splice');
+		/*
+		slice:n 薄片 部分,v 切下
+		splice:n v 拼接，接合
+		 */
+		//slice并不直接操作原始数组
+		//slice(起始位置，结束位置) 不包含结束位置
+		var ary1 = [1, 2, 3, 4, 5],
+			ary2;
+		console.log('slice');
+		ary2 = ary1.slice(0, 3); //[1,2,3]
+		console.log(ary2);
+
+		//结束为止小于或等于起始位置，返回空数组
+		ary2 = ary1.slice(3, 1); //[ ]
+		console.log(ary2);
+		ary2 = ary1.slice(3, 2); //[ ]
+		console.log(ary2);
+		ary2 = ary1.slice(3, 3); //[ ]
+		console.log(ary2);
+
+		//索引为负数时，数组长度+负数 = 新的索引位置
+		ary2 = ary1.slice(-4, -2); //[2 , 3 ]
+		console.log(ary2);
+		ary2 = ary1.slice(ary1.length - 4, ary1.length - 2); //[2 , 3 ]
+		console.log(ary2);
+
+		//splice操作原始数组
+		//splice(起始位置，删除的元素数量) 
+		console.log('splice');
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(0); 
+		console.log(ary1);//[]
+		console.log(ary2);//[1,2,3,4,5]
+
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(0, 3); //[1,2,3]
+		console.log(ary1);//[4,5]
+		console.log(ary2);//[1,2,3]
+
+		ary1 = [1, 2, 3, 4, 5];
+		var v1 = ary1;
+		ary2 = ary1.splice(3, 1); 
+		console.log(ary1 == v1); //true 并没有创建新组数，引用没有改变
+		console.log(ary1); //[1,2,3,5]
+		console.log(ary2); //[ 4]
+
+		//索引为负数时(无论起始和结束位置)，返回的结果和slice一样，
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.slice(-4, -2); //[2 , 3 ]
+		console.log(ary1); //[1, 2 , 3, 4, 5 ]
+		console.log(ary2); //[2 , 3 ]
+
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(0, 1, 6, 7);//在第一个位置移除0，并插入6和7
+		console.log(ary1);//[6,7,2,3,4,5]
+		console.log(ary2);
+
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(0, 0, 6, 7);//在第一个位置0前插入6和7
+		console.log(ary1);//[6,7,1,2,3,4,5]
+		console.log(ary2);//[]
+
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(1, 0, 6, 7);//在第一个位置0后插入6和7
+		console.log(ary1);//[1,6,7,2,3,4,5]
+		console.log(ary2);//[]
+
+		ary1 = [1, 2, 3, 4, 5];
+		ary2 = ary1.splice(1, 1, 6, 7);//删除第二个位置1，并在原来第二个位置上插入6和7
+		console.log(ary1);//[1,6,7,3,4,5]
+		console.log(ary2);//[2]
+	</pre>
+	<h5>迭代 ES5</h5>
+	<pre class="brush:js">
+		console.log('迭代 ES5');
+
+		//some,every,filter,map,forEach
+
+		var ary = [1, 2, 3, 4, 5, 6];
+		var result;
+
+		//数组元素任何一项通过查询条件，通过一项后立即返回
+		result = ary.some(function(num) {
+			console.log('x')//执行2次
+			return num % 2 == 0; //不返回 result为false console.log会打印6次
+		});
+		console.log(result);//true
+
+		//数组元素都要通过查询条件，有一项不通过立即返回
+		result = ary.every(function(num) {
+			console.log('x') //执行1次
+			return num % 2 == 0;//不返回 result为false console.log会打印6次
+		});
+		console.log(result);//false
+
+		//数组元素根据条件筛选，返回符合条件的
+		result = ary.filter(function(num) {
+			console.log('x') //执行6次
+			return num % 2 == 0;//不返回 result为[undefined,undefined,undefined,undefined,undefined,undefined]
+		});
+		console.log(result);//[2.4.6]
+
+		//数组元素根据条件筛选，返回符合条件的
+		result = ary.map(function(num) {
+			console.log('x') //执行6次
+			return num * 2;//不返回 result为[]
+		});
+		console.log(result);//[2,4,6,8,10,12]
+
+		result = ary.forEach(function(num,index,array) {
+			//遍历元素 做逻辑操作
+			array[index ] = num * 2;
+		});
+		console.log(ary)//[2,4,6,8,10,12]
+		console.log(result) //undefined
+	</pre>
+	<h5>reduce和reduceRight ES5</h5>
+	<pre class="brush:js">
+		console.log('reduce和reduceRight ES5')
+
+		var ary = [1, 2, 3, 4, 5];
+		//从左向右 pre上个元素(或上个元素和上个上个元素操作的结果)，cur当前元素
+		var result = ary.reduce(function(pre, cur, index, array) {
+			/*
+			pre:1
+			pre:3
+			pre:6
+			pre:10 
+			 */
+			console.log('pre:'+pre);
+			return pre + cur;
+		});
+		console.log(result);//15
+		//从右向左边 pre上个元素(或上个元素和上个上个元素操作的结果)，cur当前元素
+		var result = ary.reduceRight(function(pre, cur, index, array) {
+			/*
+			pre:5
+			pre:9
+			pre:12
+			pre:14
+			 */
+			console.log('pre:'+pre);
+			return pre + cur;
+		});
+		console.log(result);//15
+	</pre>
 </body>
 <script type="text/javascript">
 SyntaxHighlighter.all();
+(function() {
+	console.log('判断是否是Array对象');
+	console.log([] instanceof Array);//true
+	console.log(1 instanceof Array);//false
+	//ES5
+	console.log(Array.isArray([]));//true
+	console.log(Array.isArray(1));//false
+})();
 (function() {
 	console.log('操控数组length属性对数组的影响');
 	//减少
@@ -195,5 +372,161 @@ SyntaxHighlighter.all();
 	console.log(values); //15,10,5,1,0
 
 	//如果仅仅反转数据，reverse更快
+})();
+(function() {
+	console.log('合并');
+	var array = [1, 2, 3, 4];
+	var newArray = array.concat(5, 6, [7, 8, 9, [10, 11, [12]]],13,[14]);
+	console.log(array);//[1,2,3,4]
+	console.log(newArray);//[1, 2, 3, 4, 5, 6, 7, 8, 9, Array[3],13,14]
+	//concat
+	//不会修改原来数组
+	//新追加的数据仅会把单一的元素或一维数据里的内容合并，元素里的子数组还是子数组
+})();(function() {
+	console.log('slice 和 splice');
+	/*
+	slice:n 薄片 部分,v 切下
+	splice:n v 拼接，接合
+	 */
+	//slice并不直接操作原始数组
+	//slice(起始位置，结束位置) 不包含结束位置
+	var ary1 = [1, 2, 3, 4, 5],
+		ary2;
+	console.log('slice');
+	ary2 = ary1.slice(0, 3); //[1,2,3]
+	console.log(ary2);
+
+	//结束为止小于或等于起始位置，返回空数组
+	ary2 = ary1.slice(3, 1); //[ ]
+	console.log(ary2);
+	ary2 = ary1.slice(3, 2); //[ ]
+	console.log(ary2);
+	ary2 = ary1.slice(3, 3); //[ ]
+	console.log(ary2);
+
+	//索引为负数时，数组长度+负数 = 新的索引位置
+	ary2 = ary1.slice(-4, -2); //[2 , 3 ]
+	console.log(ary2);
+	ary2 = ary1.slice(ary1.length - 4, ary1.length - 2); //[2 , 3 ]
+	console.log(ary2);
+
+	//splice操作原始数组
+	//splice(起始位置，删除的元素数量) 
+	console.log('splice');
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(0); 
+	console.log(ary1);//[]
+	console.log(ary2);//[1,2,3,4,5]
+
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(0, 3); //[1,2,3]
+	console.log(ary1);//[4,5]
+	console.log(ary2);//[1,2,3]
+
+	ary1 = [1, 2, 3, 4, 5];
+	var v1 = ary1;
+	ary2 = ary1.splice(3, 1); 
+	console.log(ary1 == v1); //true 并没有创建新组数，引用没有改变
+	console.log(ary1); //[1,2,3,5]
+	console.log(ary2); //[ 4]
+
+	//索引为负数时(无论起始和结束位置)，返回的结果和slice一样，
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.slice(-4, -2); //[2 , 3 ]
+	console.log(ary1); //[1, 2 , 3, 4, 5 ]
+	console.log(ary2); //[2 , 3 ]
+
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(0, 1, 6, 7);//在第一个位置移除0，并插入6和7
+	console.log(ary1);//[6,7,2,3,4,5]
+	console.log(ary2);
+
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(0, 0, 6, 7);//在第一个位置0前插入6和7
+	console.log(ary1);//[6,7,1,2,3,4,5]
+	console.log(ary2);//[]
+
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(1, 0, 6, 7);//在第一个位置0后插入6和7
+	console.log(ary1);//[1,6,7,2,3,4,5]
+	console.log(ary2);//[]
+
+	ary1 = [1, 2, 3, 4, 5];
+	ary2 = ary1.splice(1, 1, 6, 7);//删除第二个位置1，并在原来第二个位置上插入6和7
+	console.log(ary1);//[1,6,7,3,4,5]
+	console.log(ary2);//[2]
+})();
+
+(function(){
+	console.log('迭代 ES5');
+
+	//some,every,filter,map,forEach
+
+	var ary = [1, 2, 3, 4, 5, 6];
+	var result;
+
+	//数组元素任何一项通过查询条件，通过一项后立即返回
+	result = ary.some(function(num) {
+		console.log('x')//执行2次
+		return num % 2 == 0; //不返回 result为false console.log会打印6次
+	});
+	console.log(result);//true
+
+	//数组元素都要通过查询条件，有一项不通过立即返回
+	result = ary.every(function(num) {
+		console.log('x') //执行1次
+		return num % 2 == 0;//不返回 result为false console.log会打印6次
+	});
+	console.log(result);//false
+
+	//数组元素根据条件筛选，返回符合条件的
+	result = ary.filter(function(num) {
+		console.log('x') //执行6次
+		return num % 2 == 0;//不返回 result为[undefined,undefined,undefined,undefined,undefined,undefined]
+	});
+	console.log(result);//[2.4.6]
+
+	//数组元素根据条件筛选，返回符合条件的
+	result = ary.map(function(num) {
+		console.log('x') //执行6次
+		return num * 2;//不返回 result为[]
+	});
+	console.log(result);//[2,4,6,8,10,12]
+
+	result = ary.forEach(function(num,index,array) {
+		//遍历元素 做逻辑操作
+		array[index ] = num * 2;
+	});
+	console.log(ary)//[2,4,6,8,10,12]
+	console.log(result) //undefined
+})();
+(function(){
+	console.log('reduce和reduceRight ES5')
+
+	var ary = [1, 2, 3, 4, 5];
+	//从左向右 pre上个元素(或上个元素和上个上个元素操作的结果)，cur当前元素
+	var result = ary.reduce(function(pre, cur, index, array) {
+		/*
+		pre:1
+		pre:3
+		pre:6
+		pre:10 
+		 */
+		console.log('pre:'+pre);
+		return pre + cur;
+	});
+	console.log(result);//15
+	//从右向左边 pre上个元素(或上个元素和上个上个元素操作的结果)，cur当前元素
+	var result = ary.reduceRight(function(pre, cur, index, array) {
+		/*
+		pre:5
+		pre:9
+		pre:12
+		pre:14
+		 */
+		console.log('pre:'+pre);
+		return pre + cur; //不返回 就会返回undefined 作为pre给后面
+	});
+	console.log(result);//15
 })();
 </script>
