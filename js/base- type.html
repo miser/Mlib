@@ -105,4 +105,19 @@ SyntaxHighlighter.all();
 	console.log((44.9).toPrecision(1));//4e+1
 })();
 
+(function(){
+	console.log('String');
+
+	var str1 = new String('str1');
+	console.log(str1.length);//4
+	console.log(str1.charAt(0));//s
+	console.log(str1.charCodeAt(0));//115 字符编码
+	//ES5(IE8支持)
+	console.log(str1[0]);//s
+
+	var str2 = "hello ";
+	var str3 = str2.concat("world ","!");
+	console.log(str2);//"hello "
+	console.log(str3);//hello world !
+})();
 </script>
