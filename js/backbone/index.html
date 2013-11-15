@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Aop</title>
+<script type="text/javascript" src="../../lib/syntaxhighlighter/src/shCore.js"></script>
+<script type="text/javascript" src="../../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+<link href="../../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+</body>
+<script type="text/javascript" src="../jquery.js"></script>
+<script type="text/javascript" src="underscore.js"></script>
+<script type="text/javascript" src="backbone.js"></script>
+<script type="text/javascript">
+var Model =  Backbone.Model.extend({
+	urlRoot:'http://www.google.com'
+});
+var  model = new Model();
+model.set('key1', 'value1');
+model.set('key2', 'value2');
+// model.set('key2', 'value2', {
+// 	// unset: true
+// });
+// console.log(model)
+model.save({url:'http://www.baidu.com'});
+
+// var Book = Backbone.Model.extend({urlRoot : '/books'});
+
+// var solaris = new Book({id: "1083-lem-solaris"});
+
+// alert(solaris.url());
+</script>
