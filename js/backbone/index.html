@@ -15,21 +15,13 @@
 <script type="text/javascript" src="underscore.js"></script>
 <script type="text/javascript" src="backbone.js"></script>
 <script type="text/javascript">
-var Model =  Backbone.Model.extend({
-	urlRoot:'http://www.google.com'
-});
-var  model = new Model();
-model.set('key1', 'value1');
-model.set('key2', 'value2');
-// model.set('key2', 'value2', {
-// 	// unset: true
+// var Model =  Backbone.Model.extend({
+// 	urlRoot:'http://www.google.com'
 // });
-// console.log(model)
-model.save({url:'http://www.baidu.com'});
-
-// var Book = Backbone.Model.extend({urlRoot : '/books'});
-
-// var solaris = new Book({id: "1083-lem-solaris"});
-
-// alert(solaris.url());
+// var  model = new Model();
+// model.set('key1', 'value1');
+// model.set('key2', 'value2');
+// model.save({url:'http://www.baidu.com'});
+// 
+console.log(_.groupBy(['one', 'two', 'three']));
 </script>

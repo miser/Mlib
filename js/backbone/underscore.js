@@ -91,6 +91,7 @@
         }
     };
 
+
     // Return the results of applying the iterator to each element.
     // Delegates to **ECMAScript 5**'s native `map` if available.
     _.map = _.collect = function(obj, iterator, context) {
@@ -355,6 +356,7 @@
         return function(obj, value, context) {
             var result = {};
             var iterator = value == null ? _.identity : lookupIterator(value);
+            console.log(iterator)
             each(obj, function(value, index) {
                 var key = iterator.call(context, value, index, obj);
                 behavior(result, key, value);
