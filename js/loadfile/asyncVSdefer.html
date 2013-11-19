@@ -3,11 +3,60 @@
 <head>
 <meta charset="utf-8" />
 <title>script async defer</title>
-<style type="text/css">
-	
-</style>
-<script type="text/javascript" src="test1.js"></script>
+<!--
+环境：
+1.http://127.0.0.1:8081/test1、http://127.0.0.1:8081/test2和http://127.0.0.1:8081/test3分别延迟5秒、3秒和立即，并会在控制台里打印test1、test2和test3 
+2.在测试步骤中永远不会加async和defer
+
+测试步骤：
+1.不为script设定defer或async时
+	* 页面会在所有script加载和执行完后渲染 ,输出test1、test2和test3,DOMContentLoaded,onload （test1)
+2.设置defer
+	* test1为defer ,等test2的3秒延迟后，控制台会立即输出test2和test3并渲染页面触发DOMContentLoaded,等test1的5秒后会打印test1，最后触发onload（test2）
+	* test1和test2都为defer时，页面会立即触发test3并渲染触发DOMContentLoaded，尽管test2比test1先加载完成，但是只有等到test1加载完成执行后才继续执行，输出为test1和test2，最后触发onload（test3）
+3.设置async
+	*test1为async ,等test2的3秒延迟后，控制台会立即输出test2和test3并渲染页面触发DOMContentLoaded,等test1的5秒后会打印test1，最后触发onload（test4）
+	*test1和test2都为async时 ,页面会立即渲染触发DOMContentLoaded，test2先加载完先打印test2，test1后加载完打印test1，最后触发onload（test5）
+结论：
+1.不设置async和defer时，页面会等script下载执行完后继续执行
+2.设置defer时，会下载脚本，但是不会立即执行，并且按照script顺序触发
+3.设置async时，会下载脚本，但是不会立即执行，并不按照script顺序触发
+-->
+
+ <!-- http://127.0.0.1:8081 server 代码 -->
+<!-- 
+var http = require('http');
+http.createServer(function(req, res) {
+	res.writeHead(200, {
+		'Content-Type': 'text/plain'
+	});
+	if (req.url == '/test1') {
+		setTimeout(function() {
+			res.end("console.log('test1');");
+		}, 1000 * 5);
+	} else if (req.url == '/test2') {
+		setTimeout(function() {
+			res.end("console.log('test2');");
+		}, 1000 * 3);
+	} else {
+		res.end("console.log('test3');");
+	}
+	// res.end('Hello World\n');
+}).listen(8081, '127.0.0.1');
+console.log('Server running at http://127.0.0.1:8081/'); 
+-->
+<script type="text/javascript">
+	window.onload = function() {
+		console.log('onload');
+	}
+	document.addEventListener('DOMContentLoaded', function() {
+		console.log('DOMContentLoaded');
+	});
+</script>
+<script type="text/javascript" src="http://127.0.0.1:8081/test1"></script>
+<script type="text/javascript" src="http://127.0.0.1:8081/test2"></script>
 </head>
 <body>
-	<img src="http://www.google.com.hk/images/srpr/logo11w.png" />
 </body>
+
+<script type="text/javascript" src="http://127.0.0.1:8081/test3" defer></script>
