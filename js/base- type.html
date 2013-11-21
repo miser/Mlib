@@ -34,73 +34,73 @@
 </html>
 <script type="text/javascript">
 SyntaxHighlighter.all();
-// (function(){
-// 	console.log('Object');
+(function(){
+	console.log('Object');
 
-// 	//Object 构造函数就像一个工厂，根据不同的参数生成对应的基础类型实例
-// 	var obj1 = new Object(10);
-// 	var obj2 = new Object('10');
-// 	var obj3 = new Object(true);
+	//Object 构造函数就像一个工厂，根据不同的参数生成对应的基础类型实例
+	var obj1 = new Object(10);
+	var obj2 = new Object('10');
+	var obj3 = new Object(true);
 
-// 	console.log(obj1 instanceof Number);
-// 	console.log(obj2 instanceof String);
-// 	console.log(obj3 instanceof Boolean);
-// })();
-// (function(){
-// 	console.log('Boolean');
+	console.log(obj1 instanceof Number);
+	console.log(obj2 instanceof String);
+	console.log(obj3 instanceof Boolean);
+})();
+(function(){
+	console.log('Boolean');
 
-// 	var b1 = new Boolean(false);
-// 	var b2 =  false;
+	var b1 = new Boolean(false);
+	var b2 =  false;
 	
-// 	//b1 在做布尔运算时被当做引用对象，所有引用对象都返回true
-// 	console.log(b1 && true);//ture
-// 	console.log(b2 && true);//false
+	//b1 在做布尔运算时被当做引用对象，所有引用对象都返回true
+	console.log(b1 && true);//ture
+	console.log(b2 && true);//false
 
-// 	console.log(b1 instanceof Boolean);//true
-// 	console.log(b2 instanceof Boolean);//false
+	console.log(b1 instanceof Boolean);//true
+	console.log(b2 instanceof Boolean);//false
 
-// 	console.log(typeof b1 );//object
-// 	console.log(typeof b2 );//boolean
+	console.log(typeof b1 );//object
+	console.log(typeof b2 );//boolean
 
-// 	console.log(b1 == b2 );//true
-// 	console.log(b1 === b2 );//false
-// })();
-// (function(){
-// 	console.log('Number');
+	console.log(b1 == b2 );//true
+	console.log(b1 === b2 );//false
+})();
+(function(){
+	console.log('Number');
 
-// 	var num1 = new Number('10');
-// 	var num2 = new Number('10xxxx');
+	var num1 = new Number('10');
+	var num2 = new Number('10xxxx');
 
-// 	console.log(num1.toString());//10
-// 	console.log(num2.toString());//NaN
+	console.log(num1.toString());//10
+	console.log(num2.toString());//NaN
 
-// 	//格式化为多种进制
-// 	console.log(num1.toString());//10
-// 	console.log(num1.toString(2));//1010
-// 	console.log(num1.toString(7));//13
-// 	console.log(num1.toString(8));//12
-// 	console.log(num1.toString(10));//10
-// 	console.log(num1.toString(16));//a
+	//格式化为多种进制
+	console.log(num1.toString());//10
+	console.log(num1.toString(2));//1010
+	console.log(num1.toString(7));//13
+	console.log(num1.toString(8));//12
+	console.log(num1.toString(10));//10
+	console.log(num1.toString(16));//a
 
-// 	//保留小数点，并进行舍入
-// 	var num3 = new Number('10.0145');
-// 	console.log(num3.toFixed(3))//10.014
-// 	console.log(num3.toFixed(2))//10.01
+	//保留小数点，并进行舍入
+	var num3 = new Number('10.0145');
+	console.log(num3.toFixed(3))//10.014
+	console.log(num3.toFixed(2))//10.01
 
-// 	//待测试
-// 	//IE8及之前版本，对(-0.93,-0.5] [0.5,0.94)无法做正确toFiexed，会返回0而不是1或-1
-// 	//
+	//待测试
+	//IE8及之前版本，对(-0.93,-0.5] [0.5,0.94)无法做正确toFiexed，会返回0而不是1或-1
+	//
 	
-// 	var num4 = new Number(99);
-// 	console.log(num4.toExponential());//9.9e+1
-// 	//准确的保存1位，会先舍入到100，在调用toExponential
-// 	console.log(num4.toPrecision(1));//1e+2 
-// 	console.log(num4.toPrecision(2));//99
-// 	console.log(num4.toPrecision(3));//99.0
-// 	console.log(num4.toPrecision(4));//99.00
-// 	console.log((45).toPrecision(1));//5e+1
-// 	console.log((44.9).toPrecision(1));//4e+1
-// })();
+	var num4 = new Number(99);
+	console.log(num4.toExponential());//9.9e+1
+	//准确的保存1位，会先舍入到100，在调用toExponential
+	console.log(num4.toPrecision(1));//1e+2 
+	console.log(num4.toPrecision(2));//99
+	console.log(num4.toPrecision(3));//99.0
+	console.log(num4.toPrecision(4));//99.00
+	console.log((45).toPrecision(1));//5e+1
+	console.log((44.9).toPrecision(1));//4e+1
+})();
 
 (function() {
 	console.log('String');
@@ -121,4 +121,5 @@ SyntaxHighlighter.all();
 	console.log(str4.slice(0, 4));
 	console.log(str4.slice(0, 4));
 })();
+
 </script>

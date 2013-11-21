@@ -5,24 +5,25 @@
 <title>script async defer</title>
 <!--
 环境：
-1.chrome/firefox
+1.chrome31/firefox25/IE11（其它版本没有测试），下列简称chrome/firefox/IE
 2.http://127.0.0.1:8081/test1、http://127.0.0.1:8081/test2和http://127.0.0.1:8081/test3分别延迟5秒、3秒和立即，并会在控制台里打印test1、test2和test3 
 3.在测试步骤中永远不会加async和defer
 
 测试步骤：
 1.不为script设定defer或async时
-	* 页面会在所有script加载和执行完后渲染 ,输出test1、test2和test3,DOMContentLoaded,onload （test1)
+	* 页面会在所有script加载和执行完后渲染 ,输出test1、test2和test3,DOMContentLoaded,onload 
 2.设置defer
-	* test1为defer ,等test2的3秒延迟后，控制台会立即输出test2和test3并渲染页面触发DOMContentLoaded,等test1的5秒后会打印test1，最后触发onload（test2）
-	* test1和test2都为defer时，页面会立即触发test3并渲染触发DOMContentLoaded，尽管test2比test1先加载完成，但是只有等到test1加载完成执行后才继续执行，输出为test1和test2，最后触发onload（test3）
+	* test1为defer ,chrome/IE会等test2的3秒延迟后，控制台会立即输出test2和test3,等test1的5秒后会输出test1并触发DOMContentLoaded，最后触发onload;firefox会等test2的3秒延迟后，控制台会立即输出test2和test3并触发DOMContentLoaded,等test1的5秒后会输出test1，最后触发onload;
+	* test1和test2都为defer时，chrome/IE会立即输出test3，尽管test2比test1先加载完成但是只有等到test1加载完成执行后才继续执行，输出为test1和test2并触发DOMContentLoaded，最后触发onload;firefox会立即输出test3并触发DOMContentLoaded，test2下载完后等test1下载完并执行后才执行，输出test1和test2，最后触发onload
 3.设置async
-	*test1为async ,等test2的3秒延迟后，控制台会立即输出test2和test3并渲染页面触发DOMContentLoaded,等test1的5秒后会打印test1，最后触发onload（test4）
-	*test1和test2都为async时 ,页面会立即渲染触发DOMContentLoaded，test2先加载完先打印test2，test1后加载完打印test1，最后触发onload（test5）
+	*test1为async ,等test2的3秒延迟后，会立即输出test2和test3并触发DOMContentLoaded,等test1的5秒后会打印test1，最后触发onload
+	*test1和test2都为async时 ,会立即输出test3并触发DOMContentLoaded，test2先加载完先打印test2，test1后加载完打印test1，最后触发onload
 结论：
  1. 不设置async和defer时，页面会等script下载执行完后继续执行
  2. 设置defer时，会下载脚本，但是不会立即执行并且按照script顺序触发
  3. 设置async时，会下载脚本，但是不会立即执行并不一定按照script顺序触发
- 4.设置了defer或async时，该script会在onload前执行
+ 4.无论是否设置了defer或async，该script会在onload前执行
+ 5.IE/chrome在设置defer时，与firefox不同，前者会等脚本都执行后才执行DOMContentLoaded，而后者会先于脚本执行
 -->
 
 <!--
