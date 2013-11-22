@@ -63,28 +63,59 @@
 (function() {
 	var currentPage = 1,
 		totalPage = 100,
-		n = 0, 
+		n = 0,
 		showCount = (2 * n + 1);
 
-		if(showCount > totalPage) {
-			//显示全部
-		} else{
-			if(showCount > totalPage) { 
-				//显示部分 后面的用...
-			}
-			if(showCount > (totalPage-currentPage){
+	if (showCount > totalPage) {
+		//显示全部
+	} else {
+		if (showCount > totalPage) {
+			//显示部分 后面的用...
+		}
+		if (showCount > (totalPage - currentPage) {
 				//显示部分 前面的用...
 			}
 		}
+	}
 })();
 
 
 /**
  * Given an array that may contain nested arrays, return a flattened array. Input and out put are illustrated as follows.将含有嵌套的数组排序输出。*号部分为需要写出的代码。
  * var input = [{a: 'a'}, 'b', ['c', 'd'], ['e', ['f']], 'g'];
- * function flatten_array(arr){ 
+ * function flatten_array(arr){
  * 	var out = [];
- *	*******; 
+ *	*******;
  *	return out;
  * }
  */
+(function() {
+	var a = [{
+			a: 'a'
+		}, 'b', ['c', 'd'],
+		['e', ['f']], 'g'
+	];
+
+	function flatten_array(arr) {
+		var out = [];
+
+		function parse(array) {
+			for (var index in array) {
+				var item = array[index];
+				if (typeof item == "string") {
+					out.push(item);
+				} else if (item instanceof Array) {
+					parse(item);
+				} else {
+					for (var key in item) {
+						parse(item[key]);
+					}
+				}
+			}
+		}
+		parse(arr);
+		return out;
+	}
+	var res = flatten_array(a);
+	console.log(res);
+})();
