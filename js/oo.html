@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>JS 继承</title>
+<script type="text/javascript" src="../lib/syntaxhighlighter/src/shCore.js"></script>
+<script type="text/javascript" src="../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+<link href="../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+<link href="../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+
+</style>
+</head>
+<body>
+
+</body>
+</html>
+<script type="text/javascript">
+function A() {};
+
+function B() {};
+
+A.prototype = {
+	// constructor: A
+};
+
+console.log(A.prototype.constructor); //Object {}
+console.log(B.prototype.constructor); // B{}
+
+function PersonA() {
+
+}
+
+// 为了某些目的，通过new出来的对象含有一个__prop__的东西，指向原型XXX.prototype，如果仅仅是添加或修改XXX.prototype那么new出的对象还能直接获得或执行新代码，如果是重写XXX.prototype，如XXX.prototype = { say:function(){}}，那么__prop__将无法活动新的prototype代码，因为引用地址不对了。
+
+</script>
