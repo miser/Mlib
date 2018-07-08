@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件代理</title>
+    <script type="text/javascript" src="../lib/syntaxhighlighter/src/shCore.js"></script>
+	<script type="text/javascript" src="../lib/syntaxhighlighter/scripts/shBrushJScript.js"></script>
+	<link href="../lib/syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+	<link href="../lib/syntaxhighlighter/styles/shThemeDefault.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+    	<ul>
+    		<li>
+    			<button id="c1">click me1</button>
+    		</li>
+    		<li>
+    			<button id="c2">click me2</button>
+    		</li>
+    	</ul>
+    </div>
+    <div>
+    	<pre class="brush:js">
+			let ulEL = document.getElementsByTagName('ul');
+			// addEventListener 第三个参数：true 从外向里 false 从里向外
+			// 事件代理好处：减少事件监听，减少内存
+			ulEL[0].addEventListener('click', function(event) {
+				if(event.target.id === 'c1'){
+					console.log('ul c1')
+				} else if(event.target.id === 'c2'){
+					console.log('ul c2')
+				}
+			}, false)
+			let c1EL = document.getElementById('c1'),
+				c2El = document.getElementById('c2');
+
+			c1EL.addEventListener('click', function() {
+				console.log('c1 click')
+			}, false);
+
+			c2El.addEventListener('click', function() {
+				console.log('c2 click')
+			}, false);
+		</pre>
+    </div>
+</body>
+<script type="text/javascript">
+	SyntaxHighlighter.all();
+	
+	let ulEL = document.getElementsByTagName('ul');
+	// addEventListener 第三个参数：true 从外向里 false 从里向外
+	// 事件代理好处：减少事件监听，减少内存
+	ulEL[0].addEventListener('click', function(event) {
+		if(event.target.id === 'c1'){
+			console.log('ul c1')
+		} else if(event.target.id === 'c2'){
+			console.log('ul c2')
+		}
+	}, false)
+	let c1EL = document.getElementById('c1'),
+		c2El = document.getElementById('c2');
+
+	c1EL.addEventListener('click', function() {
+		console.log('c1 click')
+	}, false);
+
+	c2El.addEventListener('click', function() {
+		console.log('c2 click')
+	}, false);
+
+	
+</script>
