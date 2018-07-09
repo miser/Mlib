@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>data-binding-method-set</title>
+</head>
+<body>
+    <input ng-bind="value1" type="text">
+    <div ng-bind="value1"></div>
+
+    <input ng-bind="value1" type="text">
+    <div ng-bind="value1"></div>
+
+    <input ng-bind="value2" type="text">
+    <div ng-bind="value2"></div>
+</body>
+<script type="text/javascript">
+	let data = {
+		value1 : 'value1 val',
+		value2 : 'value2 val',
+	}
+	let nodesWithData = {};
+
+	let inputElems = document.getElementsByTagName('input');
+
+	// 变量和页面哪些元素有关 缓存进 nodesWithData
+	function bindElements(ngBindKey){
+		let elems = document.getElementsByTagName('body')[0].getElementsByTagName('*');
+		let ary = [];
+		for(var i = 0; i < elems.length;i++){
+			let elem = elems[i];
+			var dataKey = elem.getAttribute('ng-bind');
+			if(ngBindKey === dataKey) ary.push(elem);
+		}
+		nodesWithData[ngBindKey] = ary;
+	}
+	function scan() {
+		for (var i = 0; i < inputElems.length; i++) {
+			let elem = inputElems[i];
+			var dataKey = elem.getAttribute('ng-bind');
+			bindElements(dataKey);
+		}
+
+		for (var key in nodesWithData) {
+			var elems = nodesWithData[key];
+			for (var i = 0; i < elems.length; i++) {
+				var elem = elems[i];
+				if (elem.value === void 0) {
+					elem.innerHTML = data[key];
+				} else {
+					elem.value = data[key];
+				}
+			}
+		}
+	}
+
+	function bindEvent() {
+		for (var i = 0; i < inputElems.length; i++) {
+			let elem = inputElems[i];
+			elem.addEventListener('keyup', function(e) {
+				var key = e.target.getAttribute('ng-bind');
+				data[key] = e.target.value;
+				scan();
+			})
+		}
+	}
+
+	scan();
+	bindEvent();
+</script>
