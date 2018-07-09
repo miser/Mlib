@@ -63,7 +63,7 @@ function printResult(resultId, resultDescripts) {
 		resultId2 = 'result-2';
 	printResult(resultId2, '是否都有keyCode');
 	printResult(resultId2, '对于功能键(ctrl,alt,shift,删除键等)keypress是不会触发的');
-	printResult(resultId2, 'shift按一次触发keydown,再按一次触发keyup,交替触发');
+	printResult(resultId2, '大小写键按一次触发keydown,再按一次触发keyup,交替触发');
 	printResult(resultId2, 'keypress可以区分你输入的是大写还是小写，但对中文无效');
 	printResult(resultId2, 'keypress可以区分是中文符号还是英文符号，如","和"，"');
 	txtEl2.onkeypress = function(e) {
