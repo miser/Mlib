@@ -67,4 +67,19 @@
 
 	scan();
 	bindEvent();
+
+	// 另一种 赋值拦截的方式
+	// Object.defineProperty(obj, propName, {
+
+	// 	get: function() {
+	// 		return bValue;
+	// 	},
+	// 	set: function(newValue) {
+	// 		bValue = newValue;
+	// 		scan();
+	// 	},
+
+	// 	enumerable: true,
+	// 	configurable: true
+	// });
 </script>
