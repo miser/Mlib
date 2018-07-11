@@ -7,3 +7,29 @@ Object.defineProperty(o, "a", {
 	configurable: true // 可以被删除
 });
 o.a = 23;
+
+var str = '123';
+var obj = new Object(str);
+
+
+function test1(v) {
+	v = '321';
+}
+
+function toNewString() {
+	return 'hi'
+}
+
+function test2(v) {
+	v.toString = toNewString;
+}
+
+test1(str);
+test1(obj);
+console.log(str)
+console.log(obj)
+
+test2(str);
+test2(obj);
+console.log(str)
+console.log(obj)

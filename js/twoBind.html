@@ -16,9 +16,35 @@
 </body>
 <script type="text/javascript">
 	let data = {
-		value1 : 'value1 val',
-		value2 : 'value2 val',
+		_value1 : 'value1 val',
+		_value2 : 'value2 val',
 	}
+	// 赋值拦截
+	Object.defineProperty(data, 'value1', {
+		get: function() {
+			console.log(`get ${this._value1}`)
+			return this._value1
+		},
+		set: function(newValue) {
+			console.log(`set ${newValue}`)
+			this._value1 = newValue;
+			scan();
+		},
+		enumerable: true,
+		configurable: true
+	});
+	Object.defineProperty(data, 'value2', {
+		get: function() {
+			return this._value2
+		},
+		set: function(newValue) {
+			this._value2 = newValue;
+			scan();
+		},
+		enumerable: true,
+		configurable: true
+	});
+
 	let nodesWithData = {};
 
 	let inputElems = document.getElementsByTagName('input');
@@ -60,7 +86,6 @@
 			elem.addEventListener('keyup', function(e) {
 				var key = e.target.getAttribute('ng-bind');
 				data[key] = e.target.value;
-				scan();
 			})
 		}
 	}
@@ -68,18 +93,4 @@
 	scan();
 	bindEvent();
 
-	// 另一种 赋值拦截的方式
-	// Object.defineProperty(obj, propName, {
-
-	// 	get: function() {
-	// 		return bValue;
-	// 	},
-	// 	set: function(newValue) {
-	// 		bValue = newValue;
-	// 		scan();
-	// 	},
-
-	// 	enumerable: true,
-	// 	configurable: true
-	// });
 </script>
