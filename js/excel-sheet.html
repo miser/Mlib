@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<title></title>
+	<style type="text/css">
+		html { overflow: hidden; font-size: 14px}
+		.table-outter { overflow-x: scroll; position: relative; }
+		.left-bar { 
+			position: absolute;
+			float: left; 
+			width: 80px;
+			height: 150px;
+			z-index: 99;
+		}
+		.left-bar,
+		.left-bar ul,.left-bar ul li{
+			margin: 0;
+			padding: 0;
+		}
+		.left-bar .title{
+			position: absolute;
+			right: 0;
+			left: 0;
+			height: 30px;
+			z-index: 98;
+			background-color: yellow;
+		}
+		.left-bar ul{
+			height: 150px;
+			z-index: 97;
+			overflow-y: scroll;
+			overflow: -moz-scrollbars-none;
+			-ms-overflow-style: none;
+		}
+		.left-bar ul::-webkit-scrollbar {
+		    display: none;
+		}
+		.left-bar ul li { 
+			height: 30px; 
+			background-color: #ccc;
+			list-style: none;
+			z-index: 97;
+		}
+
+		.table-excel {
+			margin-left: 80px;
+			display: block;
+		    border-collapse: collapse;
+		}
+		.table-excel td {
+			padding: 0;
+			height: 30px;
+			min-width: 400px;
+		}
+		.table-excel thead {
+			display:block;
+			background-color: red;
+			overflow:scroll;
+			overflow: -moz-scrollbars-none;
+			-ms-overflow-style: none;
+		}
+		.table-excel thead::-webkit-scrollbar {
+		    display: none;
+		}
+		.table-excel tbody {
+			height: 120px;
+		    display: inline-block;
+		    width: 100%;
+		    overflow: auto;
+		}
+		.table-excel tbody tr td {
+			width: 100px;
+		}
+		.table-excel tr  td:first-child {
+			width: 100px;
+		}
+		.table-excel tbody tr  td:nth-child(3) {
+			background-color: yellow;
+		}
+		.shade {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			z-index: 100;
+		}
+	</style>
+</head>
+<body>
+	<div class="table-outter">
+		<div class="left-bar">
+			<div class="title">编号</div>
+			<ul class="left-bar-table">
+				<li></li>
+				<li>1</li>
+				<li>2</li>
+				<li>3</li>
+				<li>4</li>
+				<li>5</li>
+			</ul>
+		</div>
+		<table class="table-excel">
+			<thead class="table-excel-head">
+				<tr>
+					<td>姓名</td>
+					<td>性别</td>
+					<td>年龄</td>
+					<td>技能</td>
+					<td>联系方式</td>
+				</tr>
+			</thead>
+			<tbody class="table-excel-body">
+				<tr>
+					<td>Miser</td>
+					<td>男</td>
+					<td>xx</td>
+					<td>javascript</td>
+					<td>139xxxxxxxxx</td>
+				</tr>
+				<tr>
+					<td>Miser</td>
+					<td>男</td>
+					<td>xx</td>
+					<td>javascript</td>
+					<td>139xxxxxxxxx</td>
+				</tr>
+				<tr>
+					<td>Miser</td>
+					<td>男</td>
+					<td>xx</td>
+					<td>javascript</td>
+					<td>139xxxxxxxxx</td>
+				</tr>
+				<tr>
+					<td>Miser</td>
+					<td>男</td>
+					<td>xx</td>
+					<td>javascript</td>
+					<td>139xxxxxxxxx</td>
+				</tr>
+				<tr>
+					<td>Miser</td>
+					<td>男</td>
+					<td>xx</td>
+					<td>javascript</td>
+					<td>139xxxxxxxxx</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="shade"></div>
+	</div>
+</body>
+<script type="text/javascript">
+	(function() {
+		let pageLocation = {};
+		let shadeEl = document.getElementsByClassName('shade')[0];
+		let leftbarEl = document.getElementsByClassName('left-bar-table')[0];
+		let excelHeadEl = document.getElementsByClassName('table-excel-head')[0];
+		let excelBodyEl = document.getElementsByClassName('table-excel-body')[0];
+		let isStop = true;
+		if (!shadeEl) return;
+
+		shadeEl.addEventListener('mousedown', function(e) {
+			pageLocation.x = e.pageX;
+			pageLocation.y = e.pageY;
+			pageLocation.offsetX = excelBodyEl.scrollLeft;
+			pageLocation.offsetY = excelBodyEl.scrollTop;
+			isStop = false;
+		});
+		shadeEl.addEventListener('mouseup', function(e) {
+			isStop = true;
+		});
+		shadeEl.addEventListener('mousemove', function(e) {
+			if(isStop === true)  return;
+
+			leftbarEl.scrollTop = pageLocation.offsetY + e.pageY - pageLocation.y;
+			excelBodyEl.scrollTop = pageLocation.offsetY + e.pageY - pageLocation.y;
+			excelBodyEl.scrollLeft = pageLocation.offsetX + e.pageX - pageLocation.x;
+			excelHeadEl.scrollLeft = pageLocation.offsetX + e.pageX - pageLocation.x;
+		});
+	})()
+</script>
+
+
+
