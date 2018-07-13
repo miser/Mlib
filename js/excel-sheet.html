@@ -154,31 +154,39 @@
 </body>
 <script type="text/javascript">
 	(function() {
-		let pageLocation = {};
 		let shadeEl = document.getElementsByClassName('shade')[0];
 		let leftbarEl = document.getElementsByClassName('left-bar-table')[0];
 		let excelHeadEl = document.getElementsByClassName('table-excel-head')[0];
 		let excelBodyEl = document.getElementsByClassName('table-excel-body')[0];
-		let isStop = true;
+		let isStop = false;
 		if (!shadeEl) return;
 
+		let pageLocation = {
+			offsetX: excelBodyEl.scrollLeft,
+			offsetY: excelBodyEl.scrollTop
+		};
+
 		shadeEl.addEventListener('mousedown', function(e) {
-			pageLocation.x = e.pageX;
-			pageLocation.y = e.pageY;
-			pageLocation.offsetX = excelBodyEl.scrollLeft;
-			pageLocation.offsetY = excelBodyEl.scrollTop;
-			isStop = false;
-		});
-		shadeEl.addEventListener('mouseup', function(e) {
+			shadeEl.style.position = 'static';
 			isStop = true;
 		});
+		document.addEventListener('mouseup', function(e) {
+			shadeEl.style.position = 'absolute';
+			isStop = false;
+		});
 		shadeEl.addEventListener('mousemove', function(e) {
-			if(isStop === true)  return;
+			if (isStop === true) return;
 
 			leftbarEl.scrollTop = pageLocation.offsetY + e.pageY - pageLocation.y;
 			excelBodyEl.scrollTop = pageLocation.offsetY + e.pageY - pageLocation.y;
 			excelBodyEl.scrollLeft = pageLocation.offsetX + e.pageX - pageLocation.x;
 			excelHeadEl.scrollLeft = pageLocation.offsetX + e.pageX - pageLocation.x;
+		});
+		shadeEl.addEventListener('mouseenter', function(e) {
+			pageLocation.x = e.pageX;
+			pageLocation.y = e.pageY;
+			pageLocation.offsetX = excelBodyEl.scrollLeft;
+			pageLocation.offsetY = excelBodyEl.scrollTop;
 		});
 	})()
 </script>
