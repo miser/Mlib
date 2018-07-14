@@ -18,10 +18,24 @@
     			<button id="c2">click me2</button>
     		</li>
     	</ul>
+    	<button id="btn-add">添加li</button>
     </div>
     <div>
     	<pre class="brush:js">
 			let ulEL = document.getElementsByTagName('ul');
+			let btn = document.getElementById('btn-add');
+			let count = 2;
+
+			btn.addEventListener('click', function() {
+				var liEl = document.createElement('li');
+				var btnEl = document.createElement('button');
+				count+=1;
+				btnEl.id = 'c' + count;
+				btnEl.innerHTML = 'click me' + count;
+				liEl.appendChild(btnEl);
+				ulEL[0].appendChild(liEl);
+			});
+
 			// addEventListener 第三个参数：true 从外向里 false 从里向外
 			// 事件代理好处：减少事件监听，减少内存
 			ulEL[0].addEventListener('click', function(event) {
@@ -29,13 +43,19 @@
 					console.log('ul c1')
 				} else if(event.target.id === 'c2'){
 					console.log('ul c2')
+				} else {
+					console.log('ul new li')
 				}
 			}, false)
 			let c1EL = document.getElementById('c1'),
 				c2El = document.getElementById('c2');
 
+			// 顺序执行
 			c1EL.addEventListener('click', function() {
 				console.log('c1 click')
+			}, false);
+			c1EL.addEventListener('click', function() {
+				console.log('c1 click 2')
 			}, false);
 
 			c2El.addEventListener('click', function() {
@@ -48,6 +68,19 @@
 	SyntaxHighlighter.all();
 	
 	let ulEL = document.getElementsByTagName('ul');
+	let btn = document.getElementById('btn-add');
+	let count = 2;
+
+	btn.addEventListener('click', function() {
+		var liEl = document.createElement('li');
+		var btnEl = document.createElement('button');
+		count+=1;
+		btnEl.id = 'c' + count;
+		btnEl.innerHTML = 'click me' + count;
+		liEl.appendChild(btnEl);
+		ulEL[0].appendChild(liEl);
+	});
+
 	// addEventListener 第三个参数：true 从外向里 false 从里向外
 	// 事件代理好处：减少事件监听，减少内存
 	ulEL[0].addEventListener('click', function(event) {
@@ -55,13 +88,19 @@
 			console.log('ul c1')
 		} else if(event.target.id === 'c2'){
 			console.log('ul c2')
+		} else {
+			console.log('ul new li')
 		}
 	}, false)
 	let c1EL = document.getElementById('c1'),
 		c2El = document.getElementById('c2');
 
+	// 顺序执行
 	c1EL.addEventListener('click', function() {
 		console.log('c1 click')
+	}, false);
+	c1EL.addEventListener('click', function() {
+		console.log('c1 click 2')
 	}, false);
 
 	c2El.addEventListener('click', function() {
