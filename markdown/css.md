@@ -61,6 +61,8 @@ li.name {}  => 它的权重 0,0,1,1
 </div>
 ```
 
+还有margin塌陷
+
 
 
 ####position定位
