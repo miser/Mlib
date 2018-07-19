@@ -71,6 +71,12 @@ _mocha 运行、enzyme 测试reactjs、chai 断言、sinon mock等_
 - **mount**：深度渲染，渲染为真实的 DOM 节点，需要全局范围内提供完整的 DOM API
 - **render**：静态渲染，渲染成静态的 HTML 字符串，用Cheerio进行解析
 
+#### sinon
+
+- **spies**：主要检测被监听函数的调用次数、参数、返回值等，并不会直接影响原来函数
+- **stub**：替换原来函数，比如ajax不方便，可以替换掉POST、GET等方法，同时拥有spies功能
+- **mock**：一个对象多个方法需要被测试时可以用mock，拥有stub素有功能
+
 我们以“爱眠物”里购物计数器按钮为例
 
 ```js
