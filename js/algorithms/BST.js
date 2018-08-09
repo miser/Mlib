@@ -68,15 +68,14 @@ Tree.prototype.postOrder = function(node = this.root) {
 // 		return node.value;
 // 	}
 // }
-Tree.prototype.getMIN = function() {
-	let current = this.root || {}
+Tree.prototype.getMIN = function(current = this.root) {
+	current = current || {};
 	while (current.left) {
 		current = current.left;
 	}
 	return current.value;
 }
-Tree.prototype.getMAX = function() {
-	let current = this.root || {}
+Tree.prototype.getMAX = function(current = this.root) {
 	while (current.right) {
 		current = current.right;
 	}
@@ -89,6 +88,14 @@ Tree.prototype.find = function(value, node = this.root) {
 	else if (value < node.value) return this.find(value, node.left);
 	else return this.find(value, node.right);
 }
+// 获取给定节点下的二叉树最小值
+// Tree.prototype.getSmallest = function(node) {
+//     if(node.left == null) {
+//         return node;
+//     } else {
+//         return this.getSmallest(node.left);
+//     }
+// };
 Tree.prototype.remove = function(value, node = this.root) {
 
 	if (!node) return null;
@@ -96,21 +103,23 @@ Tree.prototype.remove = function(value, node = this.root) {
 	if (node.value === value) {
 		if (!node.left && !node.right) {
 			return null;
-		} else if (node.left && !node.right) {
+		} else if (!node.right) {
 			return node.left
-		} else if (node.right && !node.left) {
+		} else if (!node.left) {
 			return node.right;
 		} else {
-			var rightMinNode = this.getMIN(node.right);
-			node.value = rightMinNode.value;
-			node.right = this.remove(value, node.right);
+			var rightMin = this.getMIN(node.right);
+			node.value = rightMin;
+			node.right = this.remove(rightMin, node.right);
+			return node;
 		}
 	} else if (node.value > value) {
 		node.left = this.remove(value, node.left);
+		return node;
 	} else {
 		node.right = this.remove(value, node.right);
+		return node;
 	}
-	return node;
 }
 Tree.prototype.exchange = function(node = this.root) {
 	if (!node) return null;
@@ -128,3 +137,8 @@ for (var i in ary) {
 		tree.insert(ary[i])
 	}
 }
+console.log(tree.midOrder())
+tree.remove(15)
+console.log(tree.midOrder())
+tree.remove(2)
+console.log(tree.midOrder())
